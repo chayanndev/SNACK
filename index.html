@@ -56,7 +56,7 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
   --vw:min(58vw,46svh,440px);--bg:#232526;
   position:relative;min-height:100svh;background:var(--bg);color:var(--cream);
   overflow:hidden;display:grid;grid-template-columns:100%;justify-items:center;align-content:center;
-  padding:92px 16px 28px;
+  padding:92px 16px 76px;
 }
 /* the video frame has empty space above and below the burger: pull the neighbours closer */
 .stage{position:relative;z-index:2;grid-area:2/1;width:var(--vw);aspect-ratio:1;margin:calc(var(--vw)*-.1) 0 calc(var(--vw)*-.12)}
@@ -75,21 +75,22 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 .hero-title span:last-child{grid-column:3;justify-self:start;letter-spacing:-.07em;color:var(--red)}
 .hero-copy{position:relative;z-index:3;grid-row:1;width:100%;text-align:center;margin-bottom:8px}
 .hero-rating{
-  display:flex;align-items:center;gap:14px;padding:0;
+  display:flex;align-items:center;gap:8px;padding:0;
   background:none;border:0;
 }
-.hero-social{position:relative;z-index:3;grid-row:4;margin-top:26px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px 26px;animation:fadeUp .8s .4s both}
+/* mobile: Uber Eats pinned bottom left, Google rating bottom right */
+.hero-social{position:absolute;z-index:3;left:16px;right:16px;bottom:max(22px,env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:space-between;gap:12px;animation:fadeUp .8s .4s both}
 .hero-ue{display:block;line-height:0;transform-origin:left center;transition:transform .25s,opacity .25s}
-.hero-ue .ue-logo{height:22px;width:auto;display:block}
+.hero-ue .ue-logo{height:16px;width:auto;display:block}
 .hero-ue:hover{transform:scale(1.06)}
 .hero-ue:focus-visible{outline:2px solid var(--cream);outline-offset:8px;border-radius:6px}
 .hero-rating{cursor:pointer;text-decoration:none}
-.hero-rating .g{width:24px;height:24px;flex:none;transition:transform .25s}
+.hero-rating .g{width:18px;height:18px;flex:none;transition:transform .25s}
 .hero-rating:hover .g{transform:scale(1.15) rotate(-8deg)}
 .hero-rating:hover .stars svg{filter:brightness(1.25) drop-shadow(0 0 6px rgba(251,188,4,.6))}
 .hero-rating:focus-visible{outline:2px solid var(--cream);outline-offset:8px;border-radius:8px}
-.stars{display:flex;gap:4px}
-.stars svg{width:24px;height:24px;fill:#fbbc04;
+.stars{display:flex;gap:3px}
+.stars svg{width:16px;height:16px;fill:#fbbc04;
   animation:starIn .6s cubic-bezier(.2,1.5,.4,1) both,shine 4.5s ease-in-out infinite;
   animation-delay:calc(.7s + var(--i)*.13s),calc(2.4s + var(--i)*.16s)}
 @keyframes starIn{from{opacity:0;transform:scale(.2) rotate(-50deg)}to{opacity:1;transform:none}}
@@ -100,7 +101,7 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 .hero-copy .eyebrow{color:var(--mustard);margin-bottom:10px}
 .hero-copy h2 .red{color:var(--red)}
 .hero-copy h2{font-size:clamp(1.8rem,9vw,3.4rem);line-height:1.05;margin-bottom:0;color:var(--cream);white-space:nowrap}
-.hero-cta{position:relative;z-index:3;grid-row:3;width:100%;max-width:440px;display:flex;gap:10px;white-space:nowrap}
+.hero-cta{position:relative;z-index:3;grid-row:3;margin-top:clamp(20px,6svh,56px);width:100%;max-width:440px;display:flex;gap:10px;white-space:nowrap}
 .hero-cta .btn{flex:1;justify-content:center;padding:15px 12px}
 
 /* desktop: the original composition, title split around the burger */
@@ -122,9 +123,13 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
   .hero-title span:last-child{grid-column:3;justify-self:start;margin-left:0;letter-spacing:-.07em;color:var(--red)}
   .hero-copy{position:absolute;left:50%;top:clamp(112px,15svh,165px);transform:translateX(-50%);width:min(94vw,1000px);margin:0}
   .hero-copy h2{font-size:clamp(1.9rem,5.6vw,4.6rem)}
-  .hero-cta{position:absolute;left:50%;top:calc(50% + var(--vw)*.54);transform:translateX(-50%);width:auto;max-width:none;gap:12px;justify-content:center}
+  .hero-cta{position:absolute;left:50%;top:calc(50% + var(--vw)*.54);transform:translateX(-50%);margin:0;width:auto;max-width:none;gap:12px;justify-content:center}
   .hero-cta .btn{flex:none;padding:16px 30px}
-  .hero-social{position:absolute;left:max(24px,4vw);bottom:32px;margin:0;flex-direction:column;align-items:flex-start;gap:18px}
+  .hero-social{left:max(24px,4vw);right:auto;bottom:32px;flex-direction:column;align-items:flex-start;justify-content:normal;gap:18px}
+  .hero-ue .ue-logo{height:22px}
+  .hero-rating{gap:14px}
+  .hero-rating .g,.stars svg{width:24px;height:24px}
+  .stars{gap:4px}
 }
 .btn{display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:999px;font-weight:700;transition:transform .2s,background .2s,color .2s}
 .btn-primary{background:var(--red);color:#fff}
