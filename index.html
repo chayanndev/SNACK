@@ -51,34 +51,28 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 @keyframes bump{40%{transform:scale(1.12)}}
 
 /* HERO */
+/* mobile first: tagline, burger, buttons and badges stack in the flow */
 .hero{
-  --vw:min(58svh,100vw);--bg:#232526;
-  position:relative;height:100svh;min-height:640px;background:var(--bg);color:var(--cream);
-  overflow:hidden;display:grid;place-items:center;
+  --vw:min(100vw - 16px,56svh,520px);--bg:#232526;
+  position:relative;min-height:100svh;background:var(--bg);color:var(--cream);
+  overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:92px 16px 28px;
 }
-.stage{position:relative;z-index:2;width:var(--vw);aspect-ratio:1}
+/* the video frame has empty space above and below the burger: pull the neighbours closer */
+.stage{position:relative;z-index:2;width:var(--vw);aspect-ratio:1;margin:calc(var(--vw)*-.1) 0 calc(var(--vw)*-.12)}
 .stage video,.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 .stage video{object-fit:contain;pointer-events:none}
 .stage canvas{display:none}
 .stage.keyed canvas{display:block}
 .stage.keyed video{opacity:0}
-.hero-title{
-  position:absolute;left:0;right:0;top:50%;transform:translate(-4.5vw,-50%);z-index:1;
-  display:grid;grid-template-columns:minmax(0,1fr) var(--vw) minmax(0,1fr);align-items:center;
-  font-weight:800;font-size:min(15vw,calc((51vw - var(--vw)/2)/2.25));line-height:.8;letter-spacing:-.05em;
-  white-space:nowrap;user-select:none;pointer-events:none;
-}
-.hero-title span:first-child{grid-column:1;justify-self:end;margin-right:calc(-9vw - .1em);letter-spacing:.1em;color:var(--cream)}
-.hero-title span:last-child{grid-column:3;justify-self:start;margin-left:0;letter-spacing:-.07em;color:var(--red)}
-.hero-copy{
-  position:absolute;z-index:3;left:50%;top:clamp(112px,15svh,165px);transform:translateX(-50%);
-  width:min(94vw,1000px);text-align:center;
-}
+/* on mobile the burger would cover the giant title (only a sliver of the K showed): keep it for screen readers only, the nav logo already says KLN FOOD */
+.hero-title{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.hero-copy{position:relative;z-index:3;order:-1;width:100%;text-align:center}
 .hero-rating{
   display:flex;align-items:center;gap:14px;padding:0;
   background:none;border:0;
 }
-.hero-social{position:absolute;z-index:3;left:max(24px,4vw);bottom:32px;display:flex;flex-direction:column;align-items:flex-start;gap:18px;animation:fadeUp .8s .4s both}
+.hero-social{position:relative;z-index:3;margin-top:26px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px 26px;animation:fadeUp .8s .4s both}
 .hero-ue{display:block;line-height:0;transform-origin:left center;transition:transform .25s,opacity .25s}
 .hero-ue .ue-logo{height:22px;width:auto;display:block}
 .hero-ue:hover{transform:scale(1.06)}
@@ -99,8 +93,32 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 @media (prefers-reduced-motion:reduce){.stars svg{animation:none}.hero-social{animation:none}}
 .hero-copy .eyebrow{color:var(--mustard);margin-bottom:10px}
 .hero-copy h2 .red{color:var(--red)}
-.hero-copy h2{font-size:clamp(1.9rem,5.6vw,4.6rem);line-height:1.05;margin-bottom:0;color:var(--cream);white-space:nowrap}
-.hero-cta{position:absolute;z-index:3;left:50%;top:calc(50% + var(--vw)*.54);transform:translateX(-50%);display:flex;gap:12px;justify-content:center;flex-wrap:nowrap;white-space:nowrap}
+.hero-copy h2{font-size:clamp(1.8rem,9vw,3.4rem);line-height:1.05;margin-bottom:0;color:var(--cream);white-space:nowrap}
+.hero-cta{position:relative;z-index:3;width:100%;max-width:440px;display:flex;gap:10px;white-space:nowrap}
+.hero-cta .btn{flex:1;justify-content:center;padding:15px 12px}
+
+/* desktop: the original composition, title split around the burger */
+@media (min-width:901px){
+  .hero{
+    --vw:min(58svh,100vw);
+    height:100svh;min-height:640px;padding:0;display:grid;place-items:center;
+  }
+  .stage{margin:0}
+  .hero-title{
+    position:absolute;left:0;right:0;top:50%;transform:translate(-4.5vw,-50%);z-index:1;
+    width:auto;height:auto;overflow:visible;clip-path:none;
+    display:grid;grid-template-columns:minmax(0,1fr) var(--vw) minmax(0,1fr);align-items:center;
+    font-weight:800;font-size:min(15vw,calc((51vw - var(--vw)/2)/2.25));line-height:.8;letter-spacing:-.05em;
+    user-select:none;pointer-events:none;
+  }
+  .hero-title span:first-child{grid-column:1;justify-self:end;margin-right:calc(-9vw - .1em);letter-spacing:.1em;color:var(--cream)}
+  .hero-title span:last-child{grid-column:3;justify-self:start;margin-left:0;letter-spacing:-.07em;color:var(--red)}
+  .hero-copy{position:absolute;left:50%;top:clamp(112px,15svh,165px);transform:translateX(-50%);width:min(94vw,1000px)}
+  .hero-copy h2{font-size:clamp(1.9rem,5.6vw,4.6rem)}
+  .hero-cta{position:absolute;left:50%;top:calc(50% + var(--vw)*.54);transform:translateX(-50%);width:auto;max-width:none;gap:12px;justify-content:center}
+  .hero-cta .btn{flex:none;padding:16px 30px}
+  .hero-social{position:absolute;left:max(24px,4vw);bottom:32px;margin:0;flex-direction:column;align-items:flex-start;gap:18px}
+}
 .btn{display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:999px;font-weight:700;transition:transform .2s,background .2s,color .2s}
 .btn-primary{background:var(--red);color:#fff}
 .btn-primary:hover{transform:translateY(-3px);background:var(--cream);color:var(--ink)}
@@ -326,14 +344,6 @@ footer .credit a:hover{color:var(--red)}
   .links{display:none}
   .about-grid{grid-template-columns:1fr}
   section{padding:80px 0}
-  .hero{--vw:100vw}
-  .hero-title{top:50%;transform:translateY(-50%);display:flex;justify-content:center;gap:.25em;font-size:18vw}
-  .hero-title span:first-child,.hero-title span:last-child{margin:0}
-  .hero-title span{letter-spacing:-.05em!important}
-  .hero-copy{top:11%}
-}
-@media (max-width:520px){
-  .hero-cta .btn{padding:14px 22px}
 }
 </style>
 </head>
