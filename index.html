@@ -51,28 +51,34 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 @keyframes bump{40%{transform:scale(1.12)}}
 
 /* HERO */
-/* mobile first: tagline, burger, buttons and badges stack in the flow */
+/* mobile first: tagline, then KLN [burger] FOOD in one row like on desktop, then buttons and badges */
 .hero{
-  --vw:min(100vw - 16px,56svh,520px);--bg:#232526;
+  --vw:min(58vw,46svh,440px);--bg:#232526;
   position:relative;min-height:100svh;background:var(--bg);color:var(--cream);
-  overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  overflow:hidden;display:grid;grid-template-columns:100%;justify-items:center;align-content:center;
   padding:92px 16px 28px;
 }
 /* the video frame has empty space above and below the burger: pull the neighbours closer */
-.stage{position:relative;z-index:2;width:var(--vw);aspect-ratio:1;margin:calc(var(--vw)*-.1) 0 calc(var(--vw)*-.12)}
+.stage{position:relative;z-index:2;grid-area:2/1;width:var(--vw);aspect-ratio:1;margin:calc(var(--vw)*-.1) 0 calc(var(--vw)*-.12)}
 .stage video,.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 .stage video{object-fit:contain;pointer-events:none}
 .stage canvas{display:none}
 .stage.keyed canvas{display:block}
 .stage.keyed video{opacity:0}
-/* on mobile the burger would cover the giant title (only a sliver of the K showed): keep it for screen readers only, the nav logo already says KLN FOOD */
-.hero-title{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
-.hero-copy{position:relative;z-index:3;order:-1;width:100%;text-align:center}
+/* title shares the burger's grid cell: KLN on the left, FOOD on the right, edges tucked under the burger */
+.hero-title{
+  position:relative;z-index:1;grid-area:2/1;align-self:center;width:100vw;padding-inline:10px;
+  display:grid;grid-template-columns:minmax(0,1fr) calc(var(--vw)*.72) minmax(0,1fr);align-items:center;
+  font-weight:800;font-size:min(10.5vw,72px);line-height:.8;white-space:nowrap;user-select:none;pointer-events:none;
+}
+.hero-title span:first-child{grid-column:1;justify-self:end;letter-spacing:-.02em;color:var(--cream)}
+.hero-title span:last-child{grid-column:3;justify-self:start;letter-spacing:-.07em;color:var(--red)}
+.hero-copy{position:relative;z-index:3;grid-row:1;width:100%;text-align:center;margin-bottom:8px}
 .hero-rating{
   display:flex;align-items:center;gap:14px;padding:0;
   background:none;border:0;
 }
-.hero-social{position:relative;z-index:3;margin-top:26px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px 26px;animation:fadeUp .8s .4s both}
+.hero-social{position:relative;z-index:3;grid-row:4;margin-top:26px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px 26px;animation:fadeUp .8s .4s both}
 .hero-ue{display:block;line-height:0;transform-origin:left center;transition:transform .25s,opacity .25s}
 .hero-ue .ue-logo{height:22px;width:auto;display:block}
 .hero-ue:hover{transform:scale(1.06)}
@@ -94,26 +100,27 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 .hero-copy .eyebrow{color:var(--mustard);margin-bottom:10px}
 .hero-copy h2 .red{color:var(--red)}
 .hero-copy h2{font-size:clamp(1.8rem,9vw,3.4rem);line-height:1.05;margin-bottom:0;color:var(--cream);white-space:nowrap}
-.hero-cta{position:relative;z-index:3;width:100%;max-width:440px;display:flex;gap:10px;white-space:nowrap}
+.hero-cta{position:relative;z-index:3;grid-row:3;width:100%;max-width:440px;display:flex;gap:10px;white-space:nowrap}
 .hero-cta .btn{flex:1;justify-content:center;padding:15px 12px}
 
 /* desktop: the original composition, title split around the burger */
 @media (min-width:901px){
   .hero{
     --vw:min(58svh,100vw);
-    height:100svh;min-height:640px;padding:0;display:grid;place-items:center;
+    height:100svh;min-height:640px;padding:0;grid-template-columns:none;place-items:center;align-content:normal;
   }
-  .stage{margin:0}
+  .hero>*{grid-area:auto}
+  .stage{margin:0;grid-area:1/1}
   .hero-title{
     position:absolute;left:0;right:0;top:50%;transform:translate(-4.5vw,-50%);z-index:1;
-    width:auto;height:auto;overflow:visible;clip-path:none;
+    width:auto;align-self:auto;
     display:grid;grid-template-columns:minmax(0,1fr) var(--vw) minmax(0,1fr);align-items:center;
     font-weight:800;font-size:min(15vw,calc((51vw - var(--vw)/2)/2.25));line-height:.8;letter-spacing:-.05em;
     user-select:none;pointer-events:none;
   }
   .hero-title span:first-child{grid-column:1;justify-self:end;margin-right:calc(-9vw - .1em);letter-spacing:.1em;color:var(--cream)}
   .hero-title span:last-child{grid-column:3;justify-self:start;margin-left:0;letter-spacing:-.07em;color:var(--red)}
-  .hero-copy{position:absolute;left:50%;top:clamp(112px,15svh,165px);transform:translateX(-50%);width:min(94vw,1000px)}
+  .hero-copy{position:absolute;left:50%;top:clamp(112px,15svh,165px);transform:translateX(-50%);width:min(94vw,1000px);margin:0}
   .hero-copy h2{font-size:clamp(1.9rem,5.6vw,4.6rem)}
   .hero-cta{position:absolute;left:50%;top:calc(50% + var(--vw)*.54);transform:translateX(-50%);width:auto;max-width:none;gap:12px;justify-content:center}
   .hero-cta .btn{flex:none;padding:16px 30px}
